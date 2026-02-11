@@ -18,6 +18,6 @@ En él se demuestran las capacidades obtenidas sobre:
 - Resolución_Ejercicios.SQL
   
 # Autor
--Antonio Fernández
+- Antonio Fernández
 - @antonio28863
 
