@@ -1,5 +1,5 @@
 # Proyecto_Logica
-Resolución de los ejercicios sobre lógica consultas SQL.
+Resolución de los ejercicios sobre consultas SQL.
 
 # Descripción
 En este proyecto se resuelven los ejercicios planteados de consultas SQL realizadas sobre la base de datos Sakila.
