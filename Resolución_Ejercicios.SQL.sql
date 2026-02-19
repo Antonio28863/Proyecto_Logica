@@ -22,7 +22,7 @@ and f.language_id = f.original_language_id ;
 
 --5. Ordena las películas por duración de forma ascendente.
 
-select *
+select f.film_id, f.title, f.length 
 from film f 
 order by f.length asc ;
 
@@ -97,10 +97,10 @@ from payment p ;
 
 --16. Muestra los 10 clientes con mayor valor de id.
 
-select *
+select c.customer_id, c.first_name, c.last_name 
 from customer c 
 order by c.customer_id desc
-limit 10;
+limit 10 ;
 
 --17. Encuentra el nombre y apellido de los actores que aparecen en la película con título ‘Egg Igby’.
 
@@ -208,7 +208,7 @@ select
 from film f 
 left join inventory i 
 on f.film_id = i.film_id
-group by f.film_id  ;
+group by f.film_id, f.title ;
 
 --30. Obtener los actores y el número de películas en las que ha actuado.
 
@@ -243,7 +243,7 @@ order by a.first_name ;
 
 --33. Obtener todas las películas que tenemos y todos los registros de alquiler.
 
-select f.title, r.* 
+select f.title, r.rental_id, r.rental_date, r.return_date, r.customer_id 
 from film f 
 full join inventory i 
 on f.film_id = i.film_id
@@ -295,7 +295,7 @@ order by a.last_name asc;
 
 --40. Selecciona las primeras 5 películas de la tabla “film”.
 
-select *
+select f.film_id, f.title
 from film f 
 limit 5;
 
@@ -408,7 +408,7 @@ create temp table peliculas_alquiladas as(
        on f.film_id = i.film_id
        inner join rental r 
        on i.inventory_id = r.inventory_id
-       group by f.film_id 
+       group by f.film_id, f.title
        having count (r.rental_id ) >10) ;
 
 /*53. Encuentra el título de las películas que han sido alquiladas por el cliente con el nombre ‘Tammy Sanders’ y que aún no se han devuelto. Ordena
@@ -486,7 +486,8 @@ inner join inventory i
 on f.film_id = i.film_id
 inner join rental r 
 on i.inventory_id = r.inventory_id
-where (r.return_date - r.rental_date) > INTERVAL '8 days' ;
+where r.return_date is not null
+and (r.return_date - r.rental_date) > INTERVAL '8 days' ;
 
 --58. Encuentra el título de todas las películas que son de la misma categoría que ‘Animation’.
 
@@ -494,9 +495,11 @@ select f.title
 from film f 
 inner join film_category fc 
 on f.film_id = fc.film_id
-inner join category c 
-on fc.category_id = c.category_id
-where c.name = 'Animation' ;
+where fc.category_id = (
+    select fc.category_id 
+    from category c 
+    where c.name = 'Animation') ;
+
 
 /*59. Encuentra los nombres de las películas que tienen la misma duración que la película con el título ‘Dancing Fever’. Ordena los resultados
   alfabéticamente por título de película.*/
